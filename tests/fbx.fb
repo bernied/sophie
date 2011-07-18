@@ -1,0 +1,30 @@
+12
+front_door    .1
+in_cabinet    .1
+under_bed     .1
+behind_blinds .1
+in_garage     .1
+with_dog      .1
+by_sink		  .1
+foo1          .1
+foo2          .05
+foo3          .05
+foo4          .05
+foo5          .05
+16
+front_door under_bed     5
+under_bed  behind_blinds 9
+front_door behind_blinds 5
+front_door in_cabinet    2
+in_cabinet behind_blinds 6
+front_door in_garage     3
+in_garage in_cabinet     6
+with_dog in_garage       10
+in_cabinet by_sink       4
+by_sink behind_blinds    5
+foo1 foo2				 3
+foo2 foo3                4
+front_door foo1          4
+foo4 in_cabinet          2
+foo2 foo4                5
+foo5 foo4                2

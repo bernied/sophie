@@ -1,0 +1,31 @@
+This is an implementation of the "Find Sophie" puzzle that Facebook created in
+order to "test" potential employees.
+
+See http://www.facebook.com/careers/puzzles.php?puzzle_id=11.
+
+I never submitted this to FB because I don't have an FB account.
+
+The sophie program has both a bruteforce mode and a heuristic which uses
+simulated annealing.
+
+> ./sophie -h
+Usage: ./sophie [OPTION]... [FILE]
+
+  -h, --help              display this help and exit
+  -V, --version           output version information and exit
+  -p, --print-path        Print tour for lowest time
+Options controlling simulated annealing heuristics:
+  -b, --brute-force       Use brute force to solve
+  -i, --initial-temp      Set starting temp for simulated annealing
+  -t, --steps-per-temp    Steps per temperature change
+  -s, --cooling-steps     Numer of cooling steps
+  -f, --cooling-fraction  Cooling fraction for exponent
+  -k, --K                 K factor
+  -r, --runs              Number of runs
+  -v, --max-verts         How many verticies before using heuristic
+  -z, --randomize         Randomize starting heuristic path
+
+There are some test files in the tests directory. The file "fb4.fb" is the
+example from the puzzle.
+
+Now go find Sophie!

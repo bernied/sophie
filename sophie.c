@@ -596,6 +596,24 @@ init_graph(graph_spec* spec)
 	return g;
 }
 
+int
+is_graph_disconnected(graph* g)
+{
+	if (!g) {
+		return 0;
+	}
+	
+	for (unsigned int i=0; i < g->num_edges; i++) {
+		switch(g->edge_weights[i]) {
+			case 0:
+			case MAX_WEIGHT:
+				return 1;
+		}
+	}
+	
+	return 0;
+}
+
 void
 free_graph(graph* g)
 {
@@ -1154,7 +1172,6 @@ init_default_args(struct arg_t* my_args)
     my_args->r = NUM_RUNS;
     my_args->v = MAX_NUMBER_VERTS;
     my_args->optind = 0;
-    
 }
 
 int
@@ -1162,7 +1179,7 @@ main(int argc, char* argv[])
 {
 	//if (argc != 2) {
 	//	printf("Expecting single file name as input.");
-	//	exit(-1);
+	//	exit(EXIT_FAILURE);
 	//}
 	float total_time;
 	FILE * f;
@@ -1178,23 +1195,26 @@ main(int argc, char* argv[])
         printf("sophie version %s\n", VERSION);
     }
 
-    //	f = fopen((const char*) "../fb/fbx.txt", "r"); // LAMb: use argv[1]
 	f = fopen((const char*) argv[my_args.optind], "r");
 	if (!f) {
 		printf("Unable to open file %s.", argv[1]);
-		exit(-1);
+		exit(EXIT_FAILURE);
 	}
 	graph_spec* gs = read_graph_spec(f);
 	fclose(f);
 	if (!gs) {
 		printf("Input file invalid, failed to process.\n");
-		exit(-1);
+		exit(EXIT_FAILURE);
 	}
 	graph* g = init_graph(gs);
 	if (!g) {
 		printf("Failed to initialize the graph.\n");
-		exit(-1);
+		exit(EXIT_FAILURE);
 	}
+	if (is_graph_disconnected(g)) {
+		printf("-1.00\n");
+		exit(EXIT_SUCCESS);
+    }
 
 	srand(time(0));
 	if (my_args.b || g->num_verts <= my_args.v) {
@@ -1208,5 +1228,5 @@ main(int argc, char* argv[])
 	free_graph(g);
 
 	printf("%0.2f\n", total_time); // LAMb: print 2 values after decimal point!
-	exit(1);
+	exit(EXIT_SUCCESS);
 }

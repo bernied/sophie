@@ -25,6 +25,7 @@ static struct option const long_options[] =
   {"version", no_argument, NULL, 'V'},
   {"print-path", no_argument, NULL, 'p'},
   {"initial-temp", required_argument, NULL, 'i'},
+  {"feed-back", no_argument, NULL, 'e'},
   {"steps-per-temp", required_argument, NULL, 't'},
   {"cooling-steps", required_argument, NULL, 's'},
   {"cooling-fraction", required_argument, NULL, 'f'},
@@ -56,9 +57,10 @@ void Cmdline (struct arg_t *my_args, int argc, char *argv[])
   my_args->p = false;
   my_args->z = false;
   my_args->b = false;
+  my_args->e = false; // LAMb
 
   optind = 0;
-  while ((c = getopt_long (argc, argv, "hVpzbi:t:s:f:k:r:v:", long_options, &optind)) != - 1)
+  while ((c = getopt_long (argc, argv, "hVpzbie:t:s:f:k:r:v:", long_options, &optind)) != - 1)
     {
       switch (c)
         {
@@ -97,6 +99,10 @@ void Cmdline (struct arg_t *my_args, int argc, char *argv[])
 
         case 'r':
           my_args->r = atoi (optarg);
+          break;
+          
+        case 'e':
+          my_args->e = true;
           break;
 
         case 'v':
@@ -155,6 +161,7 @@ Options controlling simulated annealing heuristics:\n\
   -f, --cooling-fraction  Cooling fraction for exponent\n\
   -k, --K                 K factor\n\
   -r, --runs              Number of runs\n\
+  -e, --feed-back         Feed successive runs back into the next run\n\
   -v, --max-verts         How many verticies before using heuristic\n\
   -z, --randomize         Randomize starting heuristic path\n\
 \n", program_name);

@@ -10,6 +10,7 @@ s / cooling-steps		int		"  Numer of cooling steps"
 f / cooling-fraction	float	"  Cooling fraction for exponent"
 k / K					float	"  K factor"
 r / runs				int		"  Number of runs"
+e / feed-back           flag    "  Feed successive runs back into the next run"
 v / max-verts			int		"  How many verticies before using heuristic"
 z / randomize			flag	"  Randomize starting heuristic path"
 

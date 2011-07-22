@@ -37,6 +37,7 @@ struct arg_t
   float f;
   float k;
   int r;
+  bool e;
   int v;
   int optind;
 };

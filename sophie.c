@@ -871,17 +871,29 @@ float
 heuristic_calc(graph* g, graph_spec* spec, struct arg_t* my_args)
 {
 	unsigned int* permutation = (unsigned int*) malloc(g->num_verts * sizeof(unsigned int));
+	unsigned int* best_perm = NULL;
 	if (permutation == NULL) {
 		return -1.0; // LAMb: lame!
 	}	
+	if (my_args->e) {
+		best_perm = (unsigned int*) malloc(g->num_verts * sizeof(unsigned int));
+	}
 	unsigned int nv = g->num_verts;
 	unsigned int i1, i2;
 
 	float total_time = FLT_MAX;
 	for (int i=0; i < my_args->r; i++) {
-		for (unsigned int j=0; j < nv; j++) {
-			permutation[j] = j;
+		if (i > 0 && my_args->e && best_perm) {
+			for (unsigned int j=0; j < nv; j++) {
+				permutation[j] = best_perm[j];
+			}
 		}
+		else {
+			for (unsigned int j=0; j < nv; j++) {
+				permutation[j] = j;
+			}
+		}
+
 		if (my_args->z) {
 			for (unsigned int k=0; k < nv; k++) {
 				i1 = random_int(1, nv-1); // leave 1st position in tact!
@@ -889,14 +901,23 @@ heuristic_calc(graph* g, graph_spec* spec, struct arg_t* my_args)
 				transition(g, permutation, nv, i1, i2);
 			}
 		}
+		
 		anneal(g, permutation, my_args);
+		
 		float this_time = calculate_time(g, permutation, nv);
 		if (this_time < total_time) {
 			total_time = this_time;
+			if (my_args->e && best_perm) {
+				for (unsigned int j=0; j < nv; j++) {
+					best_perm[j] = permutation[j]; // LAMb: use copy function?
+				}
+			}
 		}
 	}
 //	print_tour(spec, permutation, g->num_verts, total_time);
 	free(permutation);
+	if (best_perm)
+		free(best_perm);
 
 	return total_time;
 }
@@ -1214,7 +1235,7 @@ main(int argc, char* argv[])
 	if (is_graph_disconnected(g)) {
 		printf("-1.00\n");
 		exit(EXIT_SUCCESS);
-    }
+	}
 
 	srand(time(0));
 	if (my_args.b || g->num_verts <= my_args.v) {

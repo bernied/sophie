@@ -1,6 +1,6 @@
 CFLAGS=-g -O2 -Wall -DNDEBUG -std=c99 $(OPTFLAGS)
 OPTFLAGS=
-LIBS=
+LIBS=-lm
 SOURCES=sophie.c parse_cl.c
 OBJECTS=sophie.o parse_cl.o
 
